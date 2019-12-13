@@ -6,7 +6,9 @@ import com.google.common.collect.Sets;
 
 import java.util.Set;
 
-
+/**
+ * 常量
+ */
 public class Const {
 
     public static final String CURRENT_USER = "currentUser";
