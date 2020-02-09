@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>注册</title>
+    <title>登录</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="all,follow">
@@ -29,29 +29,42 @@
 <div class="page-holder d-flex align-items-center">
     <div class="container" style="float: right">
         <div class="row align-items-center py-5" style="justify-content: center;text-align: center">
-            <!--<div class="col-5 col-lg-7 mx-auto mb-5 mb-lg-0">-->
-                <!--<div class="pr-lg-5"><img src="img/illustration.svg" alt="" class="img-fluid"></div>-->
-            <!--</div>-->
             <div class="col-lg-5 px-lg-5" style="justify-content: center;text-align: center">
-                <h2 class="mb-4">用户注册</h2>
-                <form id="loginForm" action="/manage/user/register" method="post" class="mt-4">
+                <h2 class="mb-4">用户登录</h2>
+                <form id="loginForm" action="/person/login" method="post" class="mt-4">
                     <div class="form-group mb-4">
-                        <input type="text" name="username" placeholder="用户名" class="form-control border-0 shadow form-control-lg" >
+                        <input type="text" id="username" name="username" placeholder="用户名" class="form-control border-0 shadow form-control-lg" >
                     </div>
                     <div class="form-group mb-4">
-                        <input type="password" name="password" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet">
+                        <input type="password" id="password" name="password" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet">
                     </div>
-                    <div class="form-group mb-4" >
-                        <input type="password" name="password2" placeholder="确认密码" class="form-control border-0 shadow form-control-lg text-violet">
-                    </div>
-                    <button  class="btn btn-danger shadow px-5">取 消</button>
+                    <button class="btn btn-danger shadow px-5">取 消</button>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="submit" class="btn btn-primary shadow px-5">确 定</button>
+                    <button type="button" class="btn btn-primary shadow px-5" onclick="denlu()">确 定</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script>
+    function denlu() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        $.post("/person/login",
+                {   username:username,
+                    password: password},
+                function(result) {
+                    if(result === "success"){
+
+                        window.location.href ='/person/list';
+
+                    }else{
+                        alert("输入有误");
+                    }
+
+                })
+    }
+</script>
 <!-- JavaScript files-->
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/vendor/popper.js/umd/popper.min.js}"> </script>

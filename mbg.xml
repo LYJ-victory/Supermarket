@@ -1,53 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
-  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <!-- mybatis逆向工程需要的文件演示： -->
 <generatorConfiguration>
 
-   <context id="DB2Tables" targetRuntime="MyBatis3">
-   
-   <!-- 去除逆向工程生成的注释： -->
-	<commentGenerator>
-	  <property name="suppressAllComments" value="true" />
-	</commentGenerator>
-   <!-- 配置数据库连接： -->
-    <jdbcConnection 
-        driverClass="com.mysql.jdbc.Driver"
-    	connectionURL="jdbc:mysql://localhost:3306/supermarket"
-        userId="root"
-        password="root123">
-    </jdbcConnection>
-	<!-- java类型解析: -->
-    <javaTypeResolver >
-      <property name="forceBigDecimals" value="false" />
-    </javaTypeResolver>
-	<!-- (java模型生成)指定javabean生成的位置： -->
-    <javaModelGenerator 
-    	targetPackage="com.supermarket.bean"
-    	targetProject=".\src\main\java">
-      <property name="enableSubPackages" value="true" />
-      <property name="trimStrings" value="true" />
-    </javaModelGenerator>
-	<!-- 指定映射文件： -->
-    <sqlMapGenerator 
-    	targetPackage="mapper" 
-        targetProject=".\src\main\resources">
-      <property name="enableSubPackages" value="true" />
-    </sqlMapGenerator>
-	<!-- 指定dao接口生成的位置，也就是mapper接口： -->
-    <javaClientGenerator 
-    	type="XMLMAPPER" 
-    	targetPackage="com.supermarket.dao"
-    	targetProject=".\src\main\java">
-      <property name="enableSubPackages" value="true" />
-    </javaClientGenerator>
-	<!-- 指定每个表的生成策略，就是哪个表对应哪个javabean： -->
-	<!-- 表名、生成的类名 -->
-    <!--<table tableName="cart" domainObjectName="Cart"></table>-->
-    <!--<table tableName="order" domainObjectName="Order"></table>-->
-    <!--<table tableName="payinfo" domainObjectName="Payinfo"></table>-->
-    <!--<table tableName="product" domainObjectName="Product"></table>-->
-    <table tableName="tb_user" domainObjectName="User"></table>
-  </context>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <!-- 去除逆向工程生成的注释： -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!-- 配置数据库连接： -->
+        <jdbcConnection
+                driverClass="com.mysql.jdbc.Driver"
+                connectionURL="jdbc:mysql://localhost:3306/supermarket"
+                userId="root"
+                password="root123">
+        </jdbcConnection>
+        <!-- java类型解析: -->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- (java模型生成)指定javabean生成的位置： -->
+        <javaModelGenerator
+                targetPackage="com.supermarket.bean"
+                targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="false" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- 指定映射文件： -->
+        <sqlMapGenerator
+                targetPackage="com.supermarket.mapper"
+                targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+        <!-- 指定dao接口生成的位置，也就是mapper接口： -->
+        <javaClientGenerator
+                type="XMLMAPPER"
+                targetPackage="com.supermarket.mapper"
+                targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+        <!-- 指定每个表的生成策略，就是哪个表对应哪个javabean： -->
+        <!-- 表名、生成的类名 -->
+        <!--<table tableName="cart" domainObjectName="Cart"></table>-->
+        <table tableName="tb_order" domainObjectName="TbOrder"></table>
+        <!--<table tableName="payinfo" domainObjectName="Payinfo"></table>-->
+        <!--<table tableName="product" domainObjectName="Product"></table>-->
+        <!--<table tableName="tb_user" domainObjectName="User"></table>-->
+        <!--<table tableName="user_address" domainObjectName="UserAddress"></table>-->
+    </context>
 </generatorConfiguration>

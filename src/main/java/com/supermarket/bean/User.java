@@ -1,5 +1,14 @@
 package com.supermarket.bean;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Table;
+
+@Table(name = "tb_user")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     private Integer id;
 

@@ -1,12 +1,15 @@
 package com.supermarket.bean;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import java.math.BigDecimal;
 
 public class Product {
     private Integer id;
 
     private String name;
-//  默认是0， 0表示上架，1表示下架:
+
     private Byte status;
 
     private Integer quantity;
@@ -15,7 +18,7 @@ public class Product {
 
     private String img;
 
-    private String desc;
+    private String des;
 
     public Integer getId() {
         return id;
@@ -65,11 +68,11 @@ public class Product {
         this.img = img == null ? null : img.trim();
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDes() {
+        return des;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+    public void setDes(String des) {
+        this.des = des == null ? null : des.trim();
     }
 }

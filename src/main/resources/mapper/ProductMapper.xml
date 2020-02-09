@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.supermarket.dao.ProductMapper">
+<mapper namespace="com.supermarket.mapper.ProductMapper">
   <resultMap id="BaseResultMap" type="com.supermarket.bean.Product">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -8,7 +8,7 @@
     <result column="quantity" jdbcType="INTEGER" property="quantity" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="img" jdbcType="VARCHAR" property="img" />
-    <result column="desc" jdbcType="VARCHAR" property="desc" />
+    <result column="des" jdbcType="VARCHAR" property="des" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, status, quantity, price, img, desc
+    id, name, status, quantity, price, img, des
   </sql>
   <select id="selectByExample" parameterType="com.supermarket.bean.ProductExample" resultMap="BaseResultMap">
     select
@@ -104,10 +104,10 @@
   <insert id="insert" parameterType="com.supermarket.bean.Product">
     insert into product (id, name, status, 
       quantity, price, img, 
-      desc)
+      des)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
       #{quantity,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{img,jdbcType=VARCHAR}, 
-      #{desc,jdbcType=VARCHAR})
+      #{des,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.supermarket.bean.Product">
     insert into product
@@ -130,8 +130,8 @@
       <if test="img != null">
         img,
       </if>
-      <if test="desc != null">
-        desc,
+      <if test="des != null">
+        des,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -153,8 +153,8 @@
       <if test="img != null">
         #{img,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null">
-        #{desc,jdbcType=VARCHAR},
+      <if test="des != null">
+        #{des,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -185,8 +185,8 @@
       <if test="record.img != null">
         img = #{record.img,jdbcType=VARCHAR},
       </if>
-      <if test="record.desc != null">
-        desc = #{record.desc,jdbcType=VARCHAR},
+      <if test="record.des != null">
+        des = #{record.des,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -201,7 +201,7 @@
       quantity = #{record.quantity,jdbcType=INTEGER},
       price = #{record.price,jdbcType=DECIMAL},
       img = #{record.img,jdbcType=VARCHAR},
-      desc = #{record.desc,jdbcType=VARCHAR}
+      des = #{record.des,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -224,8 +224,8 @@
       <if test="img != null">
         img = #{img,jdbcType=VARCHAR},
       </if>
-      <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+      <if test="des != null">
+        des = #{des,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -237,7 +237,7 @@
       quantity = #{quantity,jdbcType=INTEGER},
       price = #{price,jdbcType=DECIMAL},
       img = #{img,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR}
+      des = #{des,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

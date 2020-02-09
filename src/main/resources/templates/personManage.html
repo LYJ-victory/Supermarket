@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>人员管理</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- Google fonts - Popppins for copy-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,800">
+    <!-- orion icons-->
+    <link rel="stylesheet" th:href="@{/css/orionicons.css}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" th:href="@{/css/style.default.css}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" th:href="@{/img/favicon.png?3}">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+</head>
+<body>
+<!--删除某商品-->
+<div class="modal fade " id="delete_product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="border-color: red">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title" id="exampleModalLabel">危险</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                确定删除吗?
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" onclick="confirm_delete()">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--提示框：-->
+<div class="modal fade " id="tishi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="border-color: red">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title" id="ti_shi">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                删除失败
+            </div>
+            <div class="modal-footer" >
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">确定</button>
+                <!--<button type="button" class="btn btn-danger" onclick="confirm_delete()">确定</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 查看某件商品 -->
+<div class="modal fade" id="look_Product" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"  id="lookproductid"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--提示框,这里是修改或者新增商品后的回显显示-->
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" th:if="${msg}!=null">
+    <div class="toast-header">
+        <strong class="mr-auto" th:text="${msg}"></strong>
+        <small>11 mins ago</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Hello, world! This is a toast message.
+    </div>
+</div>
+<!--===============================================================================================================-->
+<!-- navbar-->
+<header class="header">
+    <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow"><a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a><a href="index.html" class="navbar-brand font-weight-bold text-uppercase text-base">网上超市后台管理系统 </a>
+        <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
+            <!--<li class="nav-item">-->
+                <!--<form id="searchForm" class="ml-auto d-none d-lg-block">-->
+                    <!--<div class="form-group position-relative mb-0">-->
+                        <!--<button type="submit" style="top: -3px; left: 0;" class="position-absolute bg-white border-0 p-0"><i class="o-search-magnify-1 text-gray text-lg"></i></button>-->
+                        <!--<input type="search" placeholder="Search ..." class="form-control form-control-sm border-0 no-shadow pl-4">-->
+                    <!--</div>-->
+                <!--</form>-->
+            <!--</li>-->
+            <li class="nav-item dropdown ml-auto"><a style="text-decoration: none" th:href="@{/manage/user/logOut}"  aria-expanded="false" class=" dropdown-toggle">登出</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<div class="d-flex align-items-stretch">
+    <div id="sidebar" class="sidebar py-3">
+        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family" th:if="${session.currentRole == 1}">管理员</div>
+        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family" th:if="${session.currentRole == 2}">销售员</div>
+        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family" th:if="${session.currentRole == 3}">送货员</div>
+        <ul class="sidebar-menu list-unstyled">
+            <li class="sidebar-list-item"><a href="/index" class="sidebar-link text-muted "><i class="o-home-1 mr-3 text-gray"></i><span>首页</span></a></li>
+            <li th:if="${session.currentRole == 1}" class="sidebar-list-item"><a href="/manage/user/list" class="active sidebar-link text-muted"><i class="o-sales-up-1 mr-3 text-gray"></i><span>人员管理</span></a></li>
+            <li th:if="${(session.currentRole == 1) || session.currentRole == 2}" class="sidebar-list-item"><a href="/manage/product/list" class="sidebar-link text-muted"><i class="o-sales-up-1 mr-3 text-gray"></i><span>商品管理</span></a></li>
+            <li th:if="${(session.currentRole == 1) || session.currentRole == 3}"  class="sidebar-list-item"><a href="/orderManage" class="sidebar-link text-muted"><i class="o-table-content-1 mr-3 text-gray"></i><span>订单管理</span></a></li>
+            <li th:if="${session.currentRole == 1}" class="sidebar-list-item"><a href="/manage/personList" class="sidebar-link text-muted"><i class="o-survey-1 mr-3 text-gray"></i><span>会员列表</span></a></li>
+        </ul>
+        <div class="text-gray-400 text-uppercase px-3 px-lg-4 py-4 font-weight-bold small headings-font-family">EXTRAS</div>
+        <ul class="sidebar-menu list-unstyled">
+            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted"><i class="o-database-1 mr-3 text-gray"></i><span>进货</span></a></li>
+            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted"><i class="o-imac-screen-1 mr-3 text-gray"></i><span>Demo</span></a></li>
+            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted"><i class="o-paperwork-1 mr-3 text-gray"></i><span>Demo</span></a></li>
+            <li class="sidebar-list-item"><a href="#" class="sidebar-link text-muted"><i class="o-wireframe-1 mr-3 text-gray"></i><span>Demo</span></a></li>
+        </ul>
+    </div>
+    <div class="page-holder w-100 d-flex flex-wrap">
+        <div class="container-fluid px-xl-5">
+            <section class="py-5">
+                <div class="row">
+                    <div class="col-lg-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <div style="float: left"><h4 class="text-uppercase mb-0">人员管理</h4></div>
+                                <div style="float: right;margin-right: 8px;"><button type="button" class="btn btn-danger" th:onclick="|javascript:deleteMoreProduct()|">批量删除</button></div>
+                                <div style="float: right;margin-right: 10px"><a th:href="@{/addPerson}" style="color: #ffffff"><button type="button" class="btn btn-primary" >新增人员</button></a></div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table card-text" style="vertical-align:middle;text-align: center">
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" th:id="allboxs" th:onclick="|javascript:allcheck()|" ></th>
+                                        <th>用户名</th>
+                                        <!--<th>用户密码</th>-->
+                                        <th>用户身份</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="product:${pageInfo.list}">
+                                        <th scope="row"  style="vertical-align:middle"><input name="boxs" type="checkbox" th:id="checkbox_item"  th:value="${product.id}"></th>
+                                        <td  style="vertical-align:middle" th:text="${product.username}"></td>
+                                        <!--<td  style="vertical-align:middle" th:text="${product.password}"></td>-->
+                                        <td  th:if="${product.role == 1}" style="vertical-align:middle" th:text="管理员"></td>
+                                        <td  th:if="${product.role == 2}" style="vertical-align:middle" th:text="销售员"></td>
+                                        <td  th:if="${product.role == 3}" style="vertical-align:middle" th:text="送货员"></td>
+                                        <!--<td  style="vertical-align:middle" th:text="${product.role}"></td>-->
+                                        <td  style="vertical-align:middle">
+                                            <a th:href="@{/updatePerson/}+${product.id}" style="color: #ffffff"><button type="button" class="btn btn-primary btn-sm">修改</button></a>
+                                            <button type="button" class="btn btn-danger btn-sm" th:onclick="deletePerson([[${product.id}]])">删除</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div style="justify-content: center;">
+                                    <p style="float: left;padding-top:7px">共有&nbsp;&nbsp;<span th:text="${pageInfo.total}"></span>&nbsp;&nbsp;个人，共有&nbsp;&nbsp;<span th:text="${pageInfo.pages}"></span>&nbsp;&nbsp;页，每页显示&nbsp;&nbsp;<span th:text="${pageInfo.pageSize}"></span>&nbsp;&nbsp;个人，当前是第&nbsp;&nbsp;<span th:text="${pageInfo.pageNum}"></span>&nbsp;&nbsp;页</p>
+                                    <div class="btn-group mr-2" role="group" aria-label="First group" style="float: right" >
+                                        <a th:href="@{/manage/user/list?pageNum=1}" style="color:#000000;margin: 5px 15px;text-decoration:none">首页</a>
+                                        <!--上一页：-->
+                                        <a th:if="${pageInfo.hasPreviousPage}" th:href="@{/manage/user/list?pageNum=}+${pageInfo.pageNum-1}" aria-label="Previous" style="color:#000000;margin: 5px 15px;text-decoration:none" th:text="@{<<}"></a>
+                                        <!-- 判断当前页是否是选择的那夜，是的话高亮显示： -->
+                                        <!--中间页码的渲染:-->
+                                        <p th:each="items:${pageInfo.navigatepageNums }" style="margin: 5px 15px">
+                                            <a th:if="${items == pageInfo.pageNum}" style="color: #0c58ff;text-decoration:none" href="#" th:text="${items}"><button type="button" class="btn btn-primary"></button></a>
+                                            <a th:if="${items != pageInfo.pageNum}" style="color:#000000;text-decoration:none" th:href="@{/manage/user/list?pageNum=}+${items}" th:text="${items}"><button type="button" class="btn btn-primary"></button></a>
+                                        </p>
+                                        <!--下一页：-->
+                                        <a th:if="${pageInfo.hasNextPage}" th:href="@{/manage/user/list?pageNum=}+${pageInfo.pageNum+1}" aria-label="Previous" style="color:#000000;margin: 5px 15px;text-decoration:none" th:text="@{>>}"></a>
+                                        <a th:href="@{/manage/user/list?pageNum=}+${pageInfo.pages}" style="color:#000000;margin: 5px 15px;text-decoration:none">末页</a>
+                                    </div>
+                                </div>
+                                <!---------------------------------------->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="footer bg-white shadow align-self-end py-3 px-xl-5 w-100">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-left text-primary">
+                        <p class="mb-2 mb-md-0">网上超市 &copy; 2019-2020</p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-right text-gray-400">
+                        <p class="mb-0"> 2019-2020 &copy; 网上超市</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+<script th:inline="none">
+    // 删除用户：
+    function deletePerson(userId) {
+        var r = confirm("确定删除该用户？");
+        if(r == true){
+                $.get(
+                        "/manage/user/deletePerson/"+userId,
+                        function (response) {
+                            if (response === "success" ) {
+                                alert("删除成功");
+                                //成功，
+                                window.location.href='/manage/user/list';
+                            } else {
+                                alert("操作失败");
+                            }
+                        }
+                );
+        }
+    }
+    //    批量删除：
+    function deleteMoreProduct() {
+
+        var r = confirm("确定批量删除？");
+        if (r == true) {
+            var ids = [];
+            //这里在复选框的value值绑定了商品id:
+            $("input[name='boxs']:checked").each(function (i) {
+                ids.push($(this).val())
+            });
+
+            $.ajax({
+                url:"/manage/user/deleteMoreProduct",
+                type: 'POST',
+                data:  JSON.stringify(ids),
+//                dataType:'json',
+                contentType:'application/json;charset=utf-8',
+                success:function (data) {
+                    if(data === "success"){
+                        alert("删除成功");
+                        //刷新：
+                        window.location.href="/manage/user/list";
+                    }else if(data === "failed"){
+                        alert("操作失败");
+                    }else{
+                        alert(data+"");
+                    }
+
+                }
+
+            });
+        }
+
+
+    }
+    //全选和全不选：
+    function allcheck() {
+        var nn = $("#allboxs").is(":checked"); //判断th中的checkbox是否被选中，如果被选中则nn为true，反之为false
+        if(nn == true) {
+            var namebox = $("input[name^='boxs']");  //获取name值为boxs的所有input
+            for(i = 0; i < namebox.length; i++) {
+                namebox[i].checked=true;    //js操作选中checkbox
+            }
+        }
+        if(nn == false) {
+            var namebox = $("input[name^='boxs']");
+            for(i = 0; i < namebox.length; i++) {
+                namebox[i].checked=false;
+            }
+        }
+    }
+
+</script>
+<!-- JavaScript files-->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/popper.js/umd/popper.min.js}"> </script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/jquery.cookie/jquery.cookie.js}"> </script>
+<script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+<script th:src="@{/js/js.cookie.min.js}"></script>
+<!--<script th:src="@{/js/charts-custom.js}"></script>-->
+<script th:src="@{/js/front.js}"></script>
+</body>
+</html>
