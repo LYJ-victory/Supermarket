@@ -26,6 +26,31 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
   </head>
   <body>
+
+
+
+<!--进货：-->
+  <div class="modal fade" id="jinhuo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel11" aria-hidden="true">
+    <div class="modal-dialog " role="document" >
+      <div class="modal-content productJinhuo_type"  th:fragment="productJinhuo_type">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel11"  th:if="${jinhuoProductInfo != null}" th:text="${jinhuoProductInfo.name}+@{&nbsp;当前库存为&nbsp;}+${jinhuoProductInfo.quantity}"></h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="jinhuoNum" class="col-form-label">输入要进货的数量:</label>
+              <input type="number" class="form-control" id="jinhuoNum" pattern="^(0\.?\d{0,2}|[1-9]\d*\.?\d{0,2})$" >
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取 消</button>
+          <button type="button" class="btn btn-primary" th:if="${jinhuoProductInfo != null}"  th:onclick="|quedinJinHuo(${jinhuoProductInfo.id},${jinhuoProductInfo.price})|">确 定</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--删除某商品-->
   <div class="modal fade " id="delete_product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -158,7 +183,7 @@
                         <td  style="vertical-align:middle;color: red" th:if="${product.status == 1 && product.quantity != 0}"><p style="color: red;padding-top: 15px">已下架</p></td>
                         <td  style="vertical-align:middle">
                           <button type="button" class="btn btn-warning btn-sm" th:onclick="look_product([[${product.id}]])">查看</button>
-                          <button type="button" class="btn btn-success btn-sm">进货</button>
+                          <button type="button" class="btn btn-success btn-sm" th:onclick="|jinhuoProduct(${product.id})|">进货</button>
                           <a th:href="@{/updateProduct/}+${product.id}" style="color: #ffffff"><button type="button" class="btn btn-primary btn-sm">修改</button></a>
                           <button type="button" class="btn btn-danger btn-sm" th:onclick="deleteById([[${product.id}]])">删除</button>
                         </td>
@@ -205,6 +230,47 @@
       </div>
     </div>
   <script th:inline="none">
+    //进货提示框：
+    function jinhuoProduct(productId) {
+      $.get(
+              "/manage/product/jinhuoProduct/"+productId,
+              function (data) {
+                $(".productJinhuo_type").html(data);
+                $("#jinhuo").modal('show');
+              }
+      )
+    }
+    //确定进货：
+    function quedinJinHuo(productId,price) {
+      var jinhuonumber = $("#jinhuoNum").val();
+      if(jinhuonumber < 0){
+        alert("请输入非负数");
+        return;
+      }
+      var allPrice = jinhuonumber*price;
+      var r = confirm("进购该商品"+jinhuonumber+"件，需要花费"+allPrice+"元,是否继续？");
+      if(r == true){
+        $.post(
+                "/manage/product/queDinJinHuoProduct",
+                {
+                  productId:productId,
+                  jinhuonumber:jinhuonumber
+                },
+                function(result) {
+                  if(result === "success"){
+                    $('#jinhuo').modal('hide');
+                    alert("操作成功");
+                    window.location.reload();
+                  }else{
+                    alert("操作失败");
+                  }
+
+                }
+        );
+      }
+      return;
+    }
+
 //    新增商品:
 function add_produuct(){
   $.get(

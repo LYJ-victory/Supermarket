@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
-import java.security.MessageDigest;
-import java.util.Base64;
 import java.util.List;
 
 /**
@@ -175,16 +173,18 @@ public class UserServiceImpl implements UserService{
     /**
      * 获得会员列表
      * @return
+     * @param pageNum
+     * @param pageSize
      */
     @Override
-    public List<User> selectAllPerson() {
+    public PageInfo selectAllPerson(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         UserExample userExample = new UserExample();
         final UserExample.Criteria criteria = userExample.createCriteria();
-//        criteria.andRoleGreaterThan(3);
         criteria.andRoleEqualTo(0);
         final List<User> userList = userMapper.selectByExample(userExample);
-
-        return userList;
+        PageInfo pageResult = new PageInfo(userList);
+        return pageResult;
     }
 
     /**

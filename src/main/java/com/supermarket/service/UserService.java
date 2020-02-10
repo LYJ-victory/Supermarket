@@ -24,7 +24,7 @@ public interface UserService {
 
     int countAll();
 
-    List<User> selectAllPerson();
+    PageInfo selectAllPerson(int pageNum, int pageSize);
 
     String deleteMoreProductByIds(List<Integer> ids);
 

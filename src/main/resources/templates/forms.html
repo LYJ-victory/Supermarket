@@ -30,14 +30,7 @@
     <header class="header">
         <nav class="navbar navbar-expand-lg px-4 py-2 bg-white shadow"><a href="#" class="sidebar-toggler text-gray-500 mr-4 mr-lg-5 lead"><i class="fas fa-align-left"></i></a><a href="index.html" class="navbar-brand font-weight-bold text-uppercase text-base">网上超市后台管理系统 </a>
             <ul class="ml-auto d-flex align-items-center list-unstyled mb-0">
-                <!--<li class="nav-item">-->
-                    <!--<form id="searchForm" class="ml-auto d-none d-lg-block">-->
-                        <!--<div class="form-group position-relative mb-0">-->
-                            <!--<button type="submit" style="top: -3px; left: 0;" class="position-absolute bg-white border-0 p-0"><i class="o-search-magnify-1 text-gray text-lg"></i></button>-->
-                            <!--<input type="search" placeholder="Search ..." class="form-control form-control-sm border-0 no-shadow pl-4">-->
-                        <!--</div>-->
-                    <!--</form>-->
-                <!--</li>-->
+
                 <li class="nav-item dropdown ml-auto"><a style="text-decoration: none" th:href="@{/manage/user/logOut}"  aria-expanded="false" class=" dropdown-toggle">登出</a>
                 </li>
             </ul>
@@ -78,21 +71,40 @@
                                         <tr>
                                             <th>用户id</th>
                                             <th>用户名称</th>
-                                            <th>用户等级</th>
+                                            <!--<th>用户等级</th>-->
                                             <!--<th>操作</th>-->
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="user:${userList}">
+                                        <tr th:each="user:${pageInfo.list}">
                                             <td th:text="${user.id}"></td>
                                             <td th:text="${user.username}"></td>
-                                            <td th:text="${user.role}"></td>
+                                            <!--<td th:text="${user.role}"></td>-->
                                             <!--<td>-->
                                                 <!--<button type="button" class="btn btn-primary btn-sm" th:onclick="lookPerson([[${user.id}]])">查看</button>-->
                                             <!--</td>-->
                                         </tr>
                                         </tbody>
                                     </table>
+
+                                    <div style="justify-content: center;" >
+                                        <p style="float: left;padding-top:7px">共有&nbsp;&nbsp;<span th:text="${pageInfo.total}"></span>&nbsp;&nbsp;件商品，共有&nbsp;&nbsp;<span th:text="${pageInfo.pages}"></span>&nbsp;&nbsp;页，每页显示&nbsp;&nbsp;<span th:text="${pageInfo.pageSize}"></span>&nbsp;&nbsp;件，当前是第&nbsp;&nbsp;<span th:text="${pageInfo.pageNum}"></span>&nbsp;&nbsp;页</p>
+                                        <div class="btn-group mr-2" role="group" aria-label="First group" style="float: right" >
+                                            <a th:href="@{/manage/product/list?pageNum=1}" style="color:#000000;margin: 5px 15px;text-decoration:none">首页</a>
+                                            <!--上一页：-->
+                                            <a th:if="${pageInfo.hasPreviousPage}" th:href="@{/manage/product/list?pageNum=}+${pageInfo.pageNum-1}" aria-label="Previous" style="color:#000000;margin: 5px 15px;text-decoration:none" th:text="@{<<}"></a>
+                                            <!--中间页码的渲染:-->
+                                            <p th:each="items:${pageInfo.navigatepageNums }" style="margin: 5px 15px">
+                                                <a th:if="${items == pageInfo.pageNum}" style="color: #0c58ff;text-decoration:none" href="#" th:text="${items}"><button type="button" class="btn btn-primary"></button></a>
+                                                <a th:if="${items != pageInfo.pageNum}" style="color:#000000;text-decoration:none" th:href="@{/manage/product/list?pageNum=}+${items}" th:text="${items}"><button type="button" class="btn btn-primary"></button></a>
+                                            </p>
+                                            <!--下一页：-->
+                                            <a th:if="${pageInfo.hasNextPage}" th:href="@{/manage/product/list?pageNum=}+${pageInfo.pageNum+1}" aria-label="Previous" style="color:#000000;margin: 5px 15px;text-decoration:none" th:text="@{>>}"></a>
+                                            <a th:href="@{/manage/product/list?pageNum=}+${pageInfo.pages}" style="color:#000000;margin: 5px 15px;text-decoration:none">末页</a>
+                                        </div>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>

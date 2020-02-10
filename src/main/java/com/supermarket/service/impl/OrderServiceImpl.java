@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
     public PageInfo getAllOrder(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<OrderManageVO> orderManageVOList = new ArrayList<>();
-        final List<TbOrder> tbOrderList = tbOrderMapper.selectList();
+        List<TbOrder> tbOrderList = tbOrderMapper.selectList();
         for (TbOrder tbOrder : tbOrderList) {
             User user = userMapper.selectByPrimaryKey(tbOrder.getUserId());
             OrderManageVO orderManageVO = new OrderManageVO();

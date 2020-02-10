@@ -216,10 +216,10 @@ public class UserManageController {
      * @return
      */
     @RequestMapping("/manage/personList")
-    public String PersonList(HttpSession session,Model model){
+    public String PersonList(Model model, HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize){
 
-        List<User> userList = userService.selectAllPerson();
-        model.addAttribute("userList",userList);
+        PageInfo result  = userService.selectAllPerson(pageNum,pageSize);
+        model.addAttribute("pageInfo",result);
         return "forms";
     }
 

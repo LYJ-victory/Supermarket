@@ -114,6 +114,30 @@ public class ProductServiceImpl implements ProductService {
         return Const.SUCCESS;
     }
 
+    /**
+     * 确定进货
+     * @param productId
+     * @param jinhuonumber
+     * @return
+     */
+    @Transactional
+    @Override
+    public String quedingJinHuoByProductId(String productId, String jinhuonumber) {
+       try{
+           final Product product  = productMapper.selectByPrimaryKey(Integer.valueOf(productId));
+           final Byte status = product.getStatus();
+           //修改商品为上架：
+           if(status.equals(new Byte("1"))){
+               product.setStatus(new Byte("0"));
+           }
+           product.setQuantity(product.getQuantity()+Integer.valueOf(jinhuonumber));
+           productMapper.updateByPrimaryKeySelective(product);
+       }catch(Exception e){
+           return Const.FAILED;
+       }
+        return Const.SUCCESS;
+    }
+
     @Transactional
     @Override
     public String deleteProductById(Integer id) {

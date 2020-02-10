@@ -180,6 +180,36 @@ public class ProductController {
     }
 
     /**
+     * 展示要进货的信息到模态框：
+     * @param productId
+     * @param model
+     * @return
+     */
+    @GetMapping("jinhuoProduct/{productId}")
+    public String jinhuoProduct(@PathVariable("productId")String productId,Model model){
+        if(StringUtils.isEmpty(productId)){
+            return Const.FAILED;
+        }
+        Product product = productService.selectLookProdduct(productId);
+        model.addAttribute("jinhuoProductInfo",product);
+        return "charts::productJinhuo_type";
+    }
+
+    /**
+     * 确定进货
+     * @param productId
+     * @param jinhuonumber
+     * @return
+     */
+    @PostMapping("queDinJinHuoProduct")
+    @ResponseBody
+    public String queDinJinHuoProduct(@RequestParam String productId,@RequestParam String jinhuonumber){
+
+       String result =  productService.quedingJinHuoByProductId(productId,jinhuonumber);
+        return result;
+    }
+
+    /**
      * 批量删除商品
      * @param ids
      * @return

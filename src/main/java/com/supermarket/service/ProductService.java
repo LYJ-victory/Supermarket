@@ -28,4 +28,6 @@ public interface ProductService {
     int countProductSum();
 
     String deleteMoreProductByIds(List<Integer> ids);
+
+    String quedingJinHuoByProductId(String productId, String jinhuonumber);
 }
