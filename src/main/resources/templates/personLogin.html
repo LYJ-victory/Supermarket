@@ -24,8 +24,14 @@
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <style>
+        body{
+            background: url("/images/personlogin.jpg");
+            background-size:100%;
+        }
+    </style>
 </head>
-<body>
+<body >
 <div class="page-holder d-flex align-items-center">
     <div class="container" style="float: right">
         <div class="row align-items-center py-5" style="justify-content: center;text-align: center">
@@ -38,9 +44,9 @@
                     <div class="form-group mb-4">
                         <input type="password" id="password" name="password" placeholder="密码" class="form-control border-0 shadow form-control-lg text-violet">
                     </div>
-                    <button class="btn btn-danger shadow px-5">取 消</button>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <button type="button" class="btn btn-primary shadow px-5" onclick="denlu()">确 定</button>
+                    <!--<button class="btn btn-danger shadow px-5">取 消</button>-->
+                    <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+                    <button type="button" class="btn btn-primary shadow" onclick="denlu()" style="width: 100%">确 定</button>
                 </form>
             </div>
         </div>
