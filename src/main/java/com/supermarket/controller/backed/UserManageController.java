@@ -84,6 +84,7 @@ public class UserManageController {
                 return "/manage/user/logOut";
             }
         }
+        model.addAttribute(Const.MESSAGE,"密码错误，权限不足");
         return "login";
     }
 

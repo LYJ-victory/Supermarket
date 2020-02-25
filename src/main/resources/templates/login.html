@@ -42,7 +42,8 @@
             <h2 class="mb-4">网上超市后台管理系统</h2>
             <form id="loginForm" action="/manage/user/login" method="post" class="mt-4">
               <div class="form-group mb-4">
-                <input type="text" name="username" id="username" placeholder="Username or Email address" class="form-control border-0 shadow form-control-lg">
+                <input  th:if="${message != null}" type="text" name="username"  th:placeholder="${message}" class="form-control border-0 shadow form-control-lg">
+                <input  th:if="${message == null}" type="text" name="username" id="username" placeholder="Username" class="form-control border-0 shadow form-control-lg">
               </div>
               <div class="form-group mb-4">
                 <input type="password" name="password" id="password" placeholder="Password" class="form-control border-0 shadow form-control-lg text-violet">
