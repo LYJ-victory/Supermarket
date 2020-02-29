@@ -33,4 +33,6 @@ public interface TbOrderMapper {
     List<TbOrder> selectList();
     @Select("select count(*) from tb_order")
     int countAll();
+    @Select("select * from tb_order where order_no like  '%${searchyOrderNo}%'  ")
+    List<TbOrder> searchOrderByOrderNo(String searchyOrderNo);
 }

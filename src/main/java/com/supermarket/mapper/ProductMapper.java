@@ -30,9 +30,18 @@ public interface ProductMapper {
     int updateByPrimaryKey(Product record);
 
 
-    @Select("select * from product order by id asc")
+    @Select("select * from product order by price desc ")
     List<Product> selectList();
 
+//    SELECT * FROM (SELECT * FROM product GROUP BY `status`) as product ORDER BY price DESC
     @Select("select count(*) from product")
     int countAll();
+
+    /**
+     * 模糊查询商品按名称
+     * @param searchProductName
+     * @return
+     */
+    @Select("select * from product where name like  '%${searchProductName}%'  ")
+    List<Product> selectByProductName(String searchProductName);
 }

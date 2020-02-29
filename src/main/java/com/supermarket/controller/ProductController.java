@@ -45,17 +45,18 @@ public class ProductController {
      * @param pageNum:当前第几页
      * @param pageSize：一页有几条数据
      * @return：第pageNum页的pageSize数据
+     *
      */
     @RequestMapping("list")
-    public String getList(Model model,HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize){
+    public String getList( Model model,HttpSession session, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         //只有管理员和销售员可以访问商品管理
         if(user == null || !(user.getRole() == 1 || user.getRole() == 2)){
             return "login";
         }
         PageInfo result =  productService.getProductList(pageNum,pageSize);
-        model.addAttribute("pageInfo",result);
 
+        model.addAttribute("pageInfo",result);
         return "charts";
     }
 
@@ -225,6 +226,24 @@ public class ProductController {
         String result = productService.deleteMoreProductByIds(ids);
 
         return result;
+    }
+
+    /**
+     * 商品名称模糊查找：
+     * @param searchProductName
+     * @return
+     */
+    @GetMapping("/searchProductName/{searchProductName}")
+    public String searchProductName(@PathVariable String searchProductName,Model model, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize){
+
+        if(StringUtils.isBlank(searchProductName)){
+            return Const.FAILED;
+        }
+
+        PageInfo result = productService.selectByProductName(pageNum,pageSize,searchProductName);
+        model.addAttribute("pageInfo",result);
+
+        return "charts::searchProductByNameType";
     }
 
 

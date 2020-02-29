@@ -146,11 +146,23 @@
               <div class="col-lg-12 mb-4">
                 <div class="card">
                   <div class="card-header">
-                    <div style="float: left"><h4 class="text-uppercase mb-0">商品管理</h4></div>
+                    <div style="float: left">
+                      <h4 class="text-uppercase mb-0">商品管理</h4>
+                    </div>
+
+                    <div style="float: left;padding-left:10px;">
+                      <form id="searchForm" action="/manage/product/searchProductName" method="post" class="ml-auto d-none d-lg-block" style="width: 200px">
+                        <div class="form-group position-relative mb-0">
+                          <button type="button" onclick="searchProductByName()" style="top: -3px; left: 0;" class="position-absolute bg-white border-0 p-0"><i class="o-search-magnify-1 text-gray text-lg"></i></button>
+                          <input type="search"  id="searchProductName" name="searchProductName"  placeholder="商品名称" class="form-control form-control-sm border-0 no-shadow pl-4">
+                        </div>
+                      </form>
+                    </div>
+
                     <div style="float: right;margin-right: 8px;"><button type="button" class="btn btn-danger" th:onclick="|javascript:deleteMoreProduct()|">批量删除</button></div>
                     <div style="float: right;margin-right: 10px;"><a th:href="@{/addProduct}" style="color: #ffffff"><button type="button" class="btn btn-primary" >新增商品</button></a></div>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body searchProductByNameType" th:fragment="searchProductByNameType" >
                     <table class="table card-text" style="vertical-align:middle;text-align: center">
                       <thead>
                       <tr>
@@ -165,6 +177,7 @@
                       </thead>
                       <tbody>
                       <tr th:each="product:${pageInfo.list}">
+                      <!--<tr th:if = "${searchList != null}"th:each="product:${searchList}">  -->
                         <th scope="row"  style="vertical-align:middle"><input name="boxs" type="checkbox" th:id="checkbox_item" th:onclick="|javascript:select_item(${product.id})|" th:value="${product.id}"></th>
                         <th> <img class="media-object img-rounded" th:src="@{/images/}+${product.img}" style="height: 80px;width: 80px;"></th>
                         <td  style="vertical-align:middle" th:text="${product.name}"></td>
@@ -223,6 +236,18 @@
       </div>
     </div>
   <script th:inline="none">
+    //搜素商品：
+    function searchProductByName() {
+      var searchProductName = $("#searchProductName").val();
+      $.get(
+              "/manage/product/searchProductName/"+searchProductName,
+              function (data) {
+                $(".searchProductByNameType").html(data);
+              }
+      )
+    }
+
+
     //进货提示框：
     function jinhuoProduct(productId) {
       $.get(

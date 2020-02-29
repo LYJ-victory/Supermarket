@@ -30,4 +30,6 @@ public interface ProductService {
     String deleteMoreProductByIds(List<Integer> ids);
 
     String quedingJinHuoByProductId(String productId, String jinhuonumber);
+
+    PageInfo selectByProductName(int pageNum, int pageSize, String searchProductName);
 }

@@ -31,4 +31,6 @@ public interface OrderService {
     TbOrder getBeiZhu(String orderNo);
 
     UserAddress getOrderAddressInfo(String orderNo);
+
+    PageInfo searchOrderByOrderNo(int pageNum, int pageSize, String searchyOrderNo);
 }

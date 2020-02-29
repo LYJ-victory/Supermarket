@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -136,6 +135,21 @@ public class ProductServiceImpl implements ProductService {
            return Const.FAILED;
        }
         return Const.SUCCESS;
+    }
+
+    /**
+     * 按商品名称模糊查询
+     *  @param pageNum
+     * @param pageSize
+     * @param searchProductName  @return
+     */
+    @Override
+    public PageInfo selectByProductName(int pageNum, int pageSize, String searchProductName) {
+        PageHelper.startPage(pageNum,pageSize);
+        //按照该条件进行查询：
+        List<Product> list  = productMapper.selectByProductName(searchProductName);
+        PageInfo pageResult = new PageInfo(list);
+        return pageResult;
     }
 
     @Transactional

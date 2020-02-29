@@ -56,6 +56,9 @@ public class UserManageController {
         ServerResponse<User> response = userService.login(username,password);
         if(response.isSuccess()){
             User user = response.getData();
+            if(user.getRole() == 0){
+                return "personLogin";
+            }
             session.setAttribute(Const.CURRENT_USER,user);
             session.setAttribute(Const.CURRENT_ROLE,user.getRole());
             //管理员登录后跳转到首页:
@@ -122,7 +125,7 @@ public class UserManageController {
     public String logOut(HttpSession session){
         System.out.println("注销");
         Integer role= (Integer) session.getAttribute(Const.CURRENT_ROLE);
-        if(role == 0){
+        if(role == null || role == 0){
             session.removeAttribute(Const.CURRENT_USER);
             session.removeAttribute(Const.CURRENT_ROLE);
             return "personLogin";

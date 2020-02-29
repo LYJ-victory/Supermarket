@@ -8,6 +8,7 @@ import com.supermarket.bean.vo.OrderManageDetal;
 import com.supermarket.bean.vo.OrderManageVO;
 import com.supermarket.common.Const;
 import com.supermarket.service.OrderService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -90,7 +91,23 @@ public class OrderManageController {
     }
 
 
+    /**
+     * 订单编号模糊查找：
+     * @param searchyOrderNo
+     * @return
+     */
+    @GetMapping("/manage/order/searchOrderByOrderNo/{searchyOrderNo}")
+    public String searchOrderByOrderNo(@PathVariable String searchyOrderNo,Model model, @RequestParam(value = "pageNum",defaultValue = "1") int pageNum, @RequestParam(value = "pageSize",defaultValue = "5") int pageSize){
 
+        if(StringUtils.isBlank(searchyOrderNo)){
+            return Const.FAILED;
+        }
+
+        PageInfo result = orderService.searchOrderByOrderNo(pageNum,pageSize,searchyOrderNo);
+        model.addAttribute("pageInfo",result);
+
+        return "tables::searchProductByNameType";
+    }
 
 
     /**

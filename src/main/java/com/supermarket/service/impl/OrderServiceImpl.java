@@ -145,6 +145,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * 根据订单编号模糊查询
+     * @param pageNum
+     * @param pageSize
+     * @param searchyOrderNo
+     * @return
+     */
+    @Override
+    public PageInfo searchOrderByOrderNo(int pageNum, int pageSize, String searchyOrderNo) {
+
+        PageHelper.startPage(pageNum,pageSize);
+        List<OrderManageVO> orderManageVOList = new ArrayList<>();
+        List<TbOrder> tbOrderList = tbOrderMapper.searchOrderByOrderNo(searchyOrderNo);
+        for (TbOrder tbOrder : tbOrderList) {
+            User user = userMapper.selectByPrimaryKey(tbOrder.getUserId());
+            OrderManageVO orderManageVO = new OrderManageVO();
+            orderManageVO.setTbOrder(tbOrder);
+            orderManageVO.setUsername(user.getUsername());
+
+            orderManageVOList.add(orderManageVO);
+        }
+        PageInfo pageResult = new PageInfo(orderManageVOList);
+        return pageResult;
+    }
+
+    /**
      * 获得订单商品详情列表：
      * @param orderId
      * @return
